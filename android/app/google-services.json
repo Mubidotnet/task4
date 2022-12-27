@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "354442102645",
+    "project_id": "jobseek-bbed3",
+    "storage_bucket": "jobseek-bbed3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354442102645:android:5a30fc5d535c02dbfb353c",
+        "android_client_info": {
+          "package_name": "com.example.fyp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354442102645-f0gkcbfot08uv24cukbfa5iknmlr5dvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdVgTmhVX8vh37xVmNJ6gcHsMTNjQbY3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354442102645-f0gkcbfot08uv24cukbfa5iknmlr5dvo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

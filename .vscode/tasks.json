@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "flutter",
+			"command": "flutter",
+			"args": [
+				"install"
+			],
+			"problemMatcher": [],
+			"label": "flutter: flutter install",
+			"detail": "",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
