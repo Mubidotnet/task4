@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fyp/allJob.dart';
 import 'package:fyp/jobseeker.dart';
 import 'package:fyp/profilePage.dart';
+import 'package:fyp/searchjobs.dart';
 import 'package:fyp/signin.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fyp/allJob.dart';
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 
 class _HomePageState extends State<HomePage> {
   String? name;
@@ -66,6 +69,7 @@ class _HomePageState extends State<HomePage> {
     });
     // print();
   }
+  
 
   @override
   void initState() {
@@ -82,17 +86,21 @@ class _HomePageState extends State<HomePage> {
   Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => MyLogin()));;
 }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.purple,
-        title: Text(
-          "Find a perfect job",
+        title: Text("Find a perfect job",
+        
         ),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.search),onPressed:(){
+          showSearch(context: context, delegate: jobsearch());
+          })
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -189,20 +197,21 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
+ 
   Widget initWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildProfileComponent(),
-        buildSearch(),
+        //buildSearch(),
         buildCategories(),
         buildPopularCompanies(),
         buildNewOpportunity()
       ],
     );
   }
+  
 
   Widget buildProfileComponent() {
     return GestureDetector(
@@ -274,98 +283,43 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildSearch() {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(.0),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              TextField(
-                // onChanged: (value) => _runFilter(value),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 15),
-                  hintText: "Search",
-                  suffixIcon: const Icon(Icons.search),
-                  // prefix: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(),
-                  ),
-                ),
+  // Widget buildSearch() {
+  //   return Container(
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(.0),
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(20.0),
+  //         child: Column(
+  //           children: [
+  //             TextField(
 
-                //     margin: const EdgeInsets.only(left: 20, right: 20, top: 35),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Expanded(
-                //           flex: 4,
-                //           child: Container(
-                //             height: 55,
-                //             padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15),
-                //             decoration: const BoxDecoration(
-                //               borderRadius: BorderRadius.all(Radius.circular(12)),
-                //               color: Color(0xffE8E8E8),
-                //             ),
-                //             child: Row(
-                //               crossAxisAlignment: CrossAxisAlignment.center,
-                //               mainAxisAlignment: MainAxisAlignment.start,
-                //               children: [
+  //               // onChanged: (value) => _runFilter(value),
+  //               decoration: InputDecoration(
+  //                 contentPadding: const EdgeInsets.symmetric(
+  //                     vertical: 10.0, horizontal: 15),
+  //                 hintText: "Search",
+                  
+  //                suffixIcon: const Icon(Icons.search
+            
+  //                ),
+  //                  //prefix: Icon(Icons.search),
+                  
+  //                 border: OutlineInputBorder(
+  //                   borderRadius: BorderRadius.circular(20.0),
+  //                   borderSide: const BorderSide(),
+                    
+  //                 ),
+  //               ),
+                
 
-                //           TextField(
-                //            // onChanged: (value) => _runFilter(value),
-                //             decoration: InputDecoration(
-                //               contentPadding:
-                //                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-                //               hintText: "Search",
-                //               suffixIcon: const Icon(Icons.search),
-                //               // prefix: Icon(Icons.search),
-                //               border: OutlineInputBorder(
-                //                 borderRadius: BorderRadius.circular(20.0),
-                //                 borderSide: const BorderSide(),
-                //               ),
-                //             ),
-                //           ),
-                //                 Expanded(
-                //                   flex: 6,
-                //                   child: Container(
-                //                     margin: const EdgeInsets.only(left: 5, right: 10),
-                //                     child: Text(
-                //                       'Search for items here',
-                //                       style: TextStyle(
-                //                         fontSize: 16,
-                //                         fontFamily: GoogleFonts.roboto().fontFamily,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //         Expanded(
-                //           flex: 1,
-                //           child: Container(
-                //             margin: const EdgeInsets.only(left: 10),
-                //             padding: const EdgeInsets.only(top: 16, bottom: 17),
-                //             decoration: const BoxDecoration(
-                //               borderRadius: BorderRadius.all(Radius.circular(12)),
-                //               color: Colors.black,
-                //             ),
-                //             child: SvgPicture.asset(
-                //               "assets/images/ic_filter.svg",
-                //             ),
-                //           ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //                      ),
+              
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget buildCategories() {
     return Container(
@@ -605,7 +559,8 @@ class _HomePageState extends State<HomePage> {
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: [
-                buildNewOpportunitiesListTile("Senior Developer",
+                buildNewOpportunitiesListTile
+                ("Senior Developer",
                     "Fanavaran, Taiwan", "assets/images/company_one.png"),
                 buildNewOpportunitiesListTile(
                   "Flutter Developer",
@@ -681,4 +636,49 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+class jobsearch extends SearchDelegate<jobs>{
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    return[IconButton( icon: Icon(Icons.clear), onPressed: () {  
+      query="";
+      },)];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(onPressed:(){
+      var result = null;
+      close(context, result);
+    }, icon: Icon(Icons.arrow_back),);
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    final mylist = loadjobs();
+
+    return ListView.builder(
+      itemCount: mylist.length,
+      itemBuilder: (context, index){
+        final jobs listitem = mylist[index];
+        return ListTile(title:
+         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+           children: <Widget>[
+             Text(listitem.title),
+             Text(listitem.categogry)
+           ],
+         ),);
+      });
+  }
+  
 }

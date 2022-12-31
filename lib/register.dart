@@ -11,6 +11,8 @@ class MyRegister extends StatefulWidget {
 }
 
 class _MyRegisterState extends State<MyRegister> {
+      bool _isObscure = true;
+
   TextEditingController emailController = new TextEditingController();
   TextEditingController passController = new TextEditingController();
   bool Validate(String email) {
@@ -87,7 +89,7 @@ class _MyRegisterState extends State<MyRegister> {
                           TextField(
                             style: TextStyle(color: Colors.white),
                             controller: passController,
-                            obscureText: true,
+                            obscureText: _isObscure,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -103,6 +105,14 @@ class _MyRegisterState extends State<MyRegister> {
                                 ),
                                 hintText: "Password",
                                 prefixIcon: Icon(Icons.lock),
+                                       suffixIcon: IconButton(
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    }),
                                 hintStyle: TextStyle(color: Colors.white),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
