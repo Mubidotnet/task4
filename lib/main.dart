@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/JobsPosts/jobpost.dart';
 import 'package:fyp/splashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 

@@ -138,21 +138,6 @@ class _HomePageState extends State<HomePage> {
               trailing: Icon(Icons.arrow_forward_ios_rounded),
             ),
             ListTile(
-              leading: Icon(Icons.help_center),
-              title: Text("Help Center"),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text("Review & Rating"),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logut"),
               onTap: () {
@@ -163,33 +148,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: Container(
-      //     margin: const EdgeInsets.only(left: 35),
-      //     child: GestureDetector(
-      //       onTap: () {
-      //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => dashBoard()));
-
-      //       },
-
-      //       child: SvgPicture.asset(
-      //         "assets/images/ic_menu.svg",
-      //         width: 10,
-      //         height: 10,
-      //       )
-      //     ),
-      //   ),
-      //   title: const Text(
-      //     "Find a perfect job",
-      //     style: TextStyle(
-      //       fontWeight: FontWeight.bold,
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      // ),
+     
       body: SafeArea(
         child: SingleChildScrollView(
           child: initWidget(),

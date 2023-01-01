@@ -115,14 +115,6 @@ class _MyLoginState extends State<MyLogin> {
                         _isObscure = !_isObscure;
                       });
                     }),
-                                // suffixIcon:   IconButton(
-                                //   onPressed: (){
-                                //     setState(() {
-                                    
-                                //     });
-                                // },
-                                // icon: Icon(Icons.visibility),
-                                // ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),

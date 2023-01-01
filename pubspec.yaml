@@ -54,6 +54,7 @@ dependencies:
   file_picker: ^5.2.4
   email_validator: ^2.1.17
   phone_number: ^1.0.0
+  sliding_up_panel: ^2.0.0+1
   
   
 
