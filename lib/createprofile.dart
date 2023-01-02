@@ -9,6 +9,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 //import 'package:fyp/dashboard.dart';
 import 'package:fyp/homepage.dart';
 import 'package:fyp/jobseeker.dart';
+import 'package:fyp/roleofuser.dart';
 import 'package:intl/intl.dart';
 import 'package:phone_number/phone_number.dart';
 
@@ -442,7 +443,7 @@ class _profileScreenState extends State<profileScreen> {
                                         skillsController.text)
                                     .then((value) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => HomePage()));
+                                      builder: (context) => userRoles()));
                                 });
                               });
                             } else {

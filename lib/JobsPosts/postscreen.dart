@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fyp/JobsPosts/add_posts.dart';
 
 class jobPost extends StatefulWidget {
   const jobPost({super.key});
@@ -21,9 +22,9 @@ class _jobPostState extends State<jobPost> {
           
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-
-      } ,
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Addpostscreen()));      } ,
        child: Icon(Icons.add),
        ),
     );

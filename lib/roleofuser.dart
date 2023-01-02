@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
-import 'package:fyp/JobsPosts/jobpost.dart';
+import 'package:fyp/JobsPosts/postscreen.dart';
 import 'package:fyp/homepage.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:fyp/homepage.dart';
@@ -100,7 +100,7 @@ class _userRolesState extends State<userRoles> {
                     ),
                     GestureDetector(
                       onTap: (){ Navigator.push(context,
-                                MaterialPageRoute(builder: (context) =>  HomePage()),
+                                MaterialPageRoute(builder: (context) => HomePage()),
                                   );
                                  },
                       child: Container(
