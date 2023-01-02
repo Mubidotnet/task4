@@ -246,8 +246,10 @@ class _MyLoginState extends State<MyLogin> {
         margin: EdgeInsets.all(5),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackdemo);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(
+        builder: (context) => HomePage()),(Route<dynamic> route) => false,);
+     // Navigator.of(context)
+        //  .push(MaterialPageRoute(builder: (context) => HomePage()));
     } catch (e) {
       //show error on wrong email or password
 

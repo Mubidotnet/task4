@@ -10,6 +10,8 @@ class Addpostscreen extends StatefulWidget {
 }
 
 class _AddpostscreenState extends State<Addpostscreen> {
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

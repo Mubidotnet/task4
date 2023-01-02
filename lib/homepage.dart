@@ -18,11 +18,62 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
   String? name;
   String? email;
   String? firstChar;
+  List<jobs> listjobs = [];
+  List<jobs> listSearchJobs = [];
+
+  Future<void> display() async {
+    listjobs = [];
+    try {
+      final List<jobs> loadedProduct = [];
+      var userData = await Firestore.instance
+          .collection('jobs')
+          .where("status", isEqualTo: "open")
+          .getDocuments();
+      userData.documents.forEach((element) {
+        String title = "";
+        String company = "";
+        String company_logo = "";
+        String city = "";
+        int timeStamp = 0;
+        element.data.forEach((key, value) {
+          if (key == "title") {
+            title = value;
+          }
+          if (key == "company") {
+            company = value;
+          }
+          if (key == "company_logo") {
+            company_logo = value;
+          }
+          if (key == "city") {
+            city = value;
+          }
+          if (key == "timestamp") {
+            // print(value.toString());
+            timeStamp = int.parse(value.toString());
+          }
+        });
+        listjobs.add(jobs(
+            title: title,
+            company: company,
+            company_logo: company_logo,
+            city: city,
+            timeStamp: timeStamp));
+      });
+      // listjobs.addAll(loadedProduct);
+      listjobs.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
+
+      print(loadedProduct);
+      // }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   //call function to get user data
   Future<void> getUserData() async {
     //get current user id
@@ -69,7 +120,6 @@ class _HomePageState extends State<HomePage> {
     });
     // print();
   }
-  
 
   @override
   void initState() {
@@ -79,27 +129,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> signOutUser() async {
-  //sign out user
-  await FirebaseAuth.instance.signOut();
+    //sign out user
+    await FirebaseAuth.instance.signOut();
 
-  //navigate to login screen
-  Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MyLogin()));;
-}
+    //navigate to login screen
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => MyLogin()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.purple,
-        title: Text("Find a perfect job",
-        
+        title: Text(
+          "Find a perfect job",
         ),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search),onPressed:(){
-          showSearch(context: context, delegate: jobsearch());
-          })
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AllJobsPage(),
+            ));
+                // showSearch(context: context, delegate: jobsearch());
+              })
         ],
       ),
       drawer: Drawer(
@@ -148,7 +209,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-     
       body: SafeArea(
         child: SingleChildScrollView(
           child: initWidget(),
@@ -156,7 +216,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
- 
+
   Widget initWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -170,7 +230,36 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  
+
+  Widget listView() {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          return ListViewItem(listjobs[index]);
+        },
+        separatorBuilder: (context, index) {
+          return Divider(
+            height: 0,
+          );
+        },
+        itemCount: listjobs.length);
+  }
+
+  Widget ListViewItem(jobs notification) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => JobDetailsPage(),
+            ));
+      },
+      child: buildNewOpportunitiesListTile(
+        notification.title,
+        notification.company + ", " + notification.city,
+        "assets/images/company_one.png",
+      ),
+    );
+  }
 
   Widget buildProfileComponent() {
     return GestureDetector(
@@ -257,22 +346,21 @@ class _HomePageState extends State<HomePage> {
   //                 contentPadding: const EdgeInsets.symmetric(
   //                     vertical: 10.0, horizontal: 15),
   //                 hintText: "Search",
-                  
+
   //                suffixIcon: const Icon(Icons.search
-            
+
   //                ),
   //                  //prefix: Icon(Icons.search),
-                  
+
   //                 border: OutlineInputBorder(
   //                   borderRadius: BorderRadius.circular(20.0),
   //                   borderSide: const BorderSide(),
-                    
+
   //                 ),
   //               ),
-                
 
   //                      ),
-              
+
   //           ],
   //         ),
   //       ),
@@ -513,21 +601,11 @@ class _HomePageState extends State<HomePage> {
           Container(
             height: 190,
             margin: const EdgeInsets.only(top: 10),
-            child: ListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              children: [
-                buildNewOpportunitiesListTile
-                ("Senior Developer",
-                    "Fanavaran, Taiwan", "assets/images/company_one.png"),
-                buildNewOpportunitiesListTile(
-                  "Flutter Developer",
-                  "Google, California",
-                  "assets/images/company_two.png",
-                ),
-              ],
-            ),
+            child: FutureBuilder(
+                future: display(),
+                builder: (ctx, snapshot) {
+                  return listView();
+                }),
           )
         ],
       ),
@@ -596,48 +674,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-class jobsearch extends SearchDelegate<jobs>{
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    // TODO: implement buildActions
-    return[IconButton( icon: Icon(Icons.clear), onPressed: () {  
-      query="";
-      },)];
-  }
+// class jobsearch extends SearchDelegate<jobs>{
+//   @override
+//   List<Widget>? buildActions(BuildContext context) {
+//     // TODO: implement buildActions
+//     return[IconButton( icon: Icon(Icons.clear), onPressed: () {  
+//       query="";
+//       },)];
+//   }
 
-  @override
-  Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
-    return IconButton(onPressed:(){
-      var result = null;
-      close(context, result);
-    }, icon: Icon(Icons.arrow_back),);
-  }
+//   @override
+//   Widget? buildLeading(BuildContext context) {
+//     // TODO: implement buildLeading
+//     return IconButton(onPressed:(){
+//       var result = null;
+//       close(context, result);
+//     }, icon: Icon(Icons.arrow_back),);
+//   }
 
-  @override
-  Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
-  }
+//   @override
+//   Widget buildResults(BuildContext context) {
+//     // TODO: implement buildResults
+//     throw UnimplementedError();
+//   }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-    final mylist = loadjobs();
+//   @override
+//   // Widget buildSuggestions(BuildContext context) {
+//   //   // TODO: implement buildSuggestions
+//   //   final mylist = loadjobs();
 
-    return ListView.builder(
-      itemCount: mylist.length,
-      itemBuilder: (context, index){
-        final jobs listitem = mylist[index];
-        return ListTile(title:
-         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-           children: <Widget>[
-             Text(listitem.title),
-             Text(listitem.categogry)
-           ],
-         ),);
-      });
-  }
+//   //   return ListView.builder(
+//   //     itemCount: mylist.length,
+//   //     itemBuilder: (context, index){
+//   //       final jobs listitem = mylist[index];
+//   //       return ListTile(title:
+//   //        Column(
+//   //         crossAxisAlignment: CrossAxisAlignment.start,
+//   //          children: <Widget>[
+//   //            Text(listitem.title),
+//   //            Text(listitem.categogry)
+//   //          ],
+//   //        ),);
+//   //     });
+//   // }
   
-}
+// }

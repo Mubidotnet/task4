@@ -252,13 +252,6 @@ class _profileScreenState extends State<profileScreen> {
                       borderRadius: BorderRadius.circular(10),
                     )),
               ),
-              //color: Colors.amber,
-              // child:
-              // TextFormField(
-              //  decoration: const InputDecoration(
-              //   hintText: 'Home Address',
-              //  ),
-              // ),
           
               SizedBox(
                 height: 10,
@@ -289,26 +282,16 @@ class _profileScreenState extends State<profileScreen> {
                         borderRadius: BorderRadius.circular(10),
                       )),
                 ),
-                // TextFormField(
-                //  decoration: const InputDecoration(
-                //   hintText: 'Education',
-                //  ),
-                // ),
+                
               ),
               SizedBox(
                 height: 10,
               ),
           
               Container(
-                //height: 60,
-                //width: 300,
-                //color: Colors.amber,
+               
                 child:
-                    // TextFormField(
-                    //  decoration: const InputDecoration(
-                    //   hintText: 'Skills',
-                    //  ),
-                    // ),
+                  
                     TextField(
                   controller: skillsController,
                   style: TextStyle(color: Colors.black),
@@ -442,8 +425,10 @@ class _profileScreenState extends State<profileScreen> {
                                         educationController.text,
                                         skillsController.text)
                                     .then((value) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => userRoles()));
+                                      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(
+                                        builder: (context) => userRoles()),(Route<dynamic> route) => false,);
+                                 // Navigator.of(context).push(MaterialPageRoute(
+                                   //   builder: (context) => userRoles()));
                                 });
                               });
                             } else {

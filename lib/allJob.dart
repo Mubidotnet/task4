@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fyp/searchjobs.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'jobseeker.dart';
 
 class AllJobsPage extends StatefulWidget {
   @override
@@ -8,6 +13,66 @@ class AllJobsPage extends StatefulWidget {
 }
 
 class _AllJobsPageState extends State<AllJobsPage> {
+  List<jobs> listjobs = [];
+  List<jobs> listSearchJobs = [];
+
+  Future<void> display() async {
+    listjobs = [];
+    try {
+      final List<jobs> loadedProduct = [];
+      var userData = await Firestore.instance
+          .collection('jobs')
+          .where("status", isEqualTo: "open")
+          .getDocuments();
+      userData.documents.forEach((element) {
+        String title = "";
+        String company = "";
+        String company_logo = "";
+        String city = "";
+        int timeStamp = 0;
+        element.data.forEach((key, value) {
+          if (key == "title") {
+            title = value;
+          }
+          if (key == "company") {
+            company = value;
+          }
+          if (key == "company_logo") {
+            company_logo = value;
+          }
+          if (key == "city") {
+            city = value;
+          }
+          if (key == "timestamp") {
+            // print(value.toString());
+            timeStamp = int.parse(value.toString());
+          }
+        });
+        listjobs.add(jobs(
+            title: title,
+            company: company,
+            company_logo: company_logo,
+            city: city,
+            timeStamp: timeStamp));
+      });
+      // listjobs.addAll(loadedProduct);
+      listjobs.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
+
+      print(loadedProduct);
+      // }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      // display();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +90,7 @@ class _AllJobsPageState extends State<AllJobsPage> {
                 "assets/images/ic_back.svg",
                 width: 10,
                 height: 10,
-              )
-          ),
+              )),
         ),
         title: const Text(
           "See All Jobs",
@@ -36,138 +100,68 @@ class _AllJobsPageState extends State<AllJobsPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildSearch(),
-            Container(
-              margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
-              child: ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  buildNewOpportunitiesListTile(
-                      "Senior Developer",
-                      "Fanavaran, Taiwan",
-                      "assets/images/company_one.png",
-                  ),
-                  buildNewOpportunitiesListTile(
-                    "Flutter Developer",
-                    "Google, California",
-                    "assets/images/company_two.png",
-                  ),
-                  buildNewOpportunitiesListTile(
-                      "Senior Developer",
-                      "Fanavaran, Taiwan",
-                      "assets/images/company_one.png"
+      body: FutureBuilder(
+          future: display(),
+          builder: (ctx, snapshot) {
+            return listView();
+          }),
+    );
+  }
 
-                  ),
-                  buildNewOpportunitiesListTile(
-                    "Flutter Developer",
-                    "Google, California",
-                    "assets/images/company_two.png",
+  Widget listView() {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          return ListViewItem(listjobs[index]);
+        },
+        separatorBuilder: (context, index) {
+          return Divider(
+            height: 0,
+          );
+        },
+        itemCount: listjobs.length);
+  }
 
-                  ),
-                  buildNewOpportunitiesListTile(
-                      "Senior Developer",
-                      "Fanavaran, Taiwan",
-                      "assets/images/company_one.png"
-
-                  ),
-                  buildNewOpportunitiesListTile(
-                    "Flutter Developer",
-                    "Google, California",
-                    "assets/images/company_two.png",
-
-                  ),
-                  buildNewOpportunitiesListTile(
-                      "Senior Developer",
-                      "Fanavaran, Taiwan",
-                      "assets/images/company_one.png"
-
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+  Widget ListViewItem(jobs notification) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => JobDetailsPage(),
+            ));
+      },
+      child: buildNewOpportunitiesListTile(
+        notification.title,
+        notification.company + ", " + notification.city,
+        "assets/images/company_one.png",
       ),
     );
   }
 
   Widget buildSearch() {
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 20, top: 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 4,
-            child: Container(
-              height: 55,
-              padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                color: Color(0xffE8E8E8),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.search,
-                      size: 25,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 5, right: 10),
-                      child: Text(
-                        'Search for items here',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: GoogleFonts.roboto().fontFamily,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: const EdgeInsets.only(left: 10),
-              padding: const EdgeInsets.only(top: 16, bottom: 17),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                color: Colors.black,
-              ),
-              child: SvgPicture.asset(
-                "assets/images/ic_filter.svg",
-              ),
-            ),
-          )
-        ],
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        onChanged: (String value) {
+          // code to perform search
+        },
+        decoration: InputDecoration(
+            hintText: 'Search...',
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25.0)))),
       ),
     );
   }
 
-  Widget buildNewOpportunitiesListTile(String title, String company, String img) {
+  Widget buildNewOpportunitiesListTile(
+      String title, String company, String img) {
     return Container(
       margin: const EdgeInsets.only(bottom: 7, top: 7),
       padding: const EdgeInsets.all(15),
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Color(0xffF8F5F5)
-      ),
+          color: Color(0xffF8F5F5)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
