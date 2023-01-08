@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fyp/allJob.dart';
 import 'package:fyp/jobseeker.dart';
+import 'package:fyp/notification.dart';
 import 'package:fyp/profilePage.dart';
 import 'package:fyp/searchjobs.dart';
 import 'package:fyp/signin.dart';
@@ -145,12 +146,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        
         backgroundColor: Colors.purple,
         title: Text(
+          
           "Find a perfect job",
         ),
         centerTitle: true,
-        actions: <Widget>[
+        actions: [
+        IconButton(
+          icon:Icon(Icons.notifications), 
+          onPressed: () {  Navigator.push(context, MaterialPageRoute( builder: (context) => MyWidget() ));
+            },),
+
           IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
@@ -159,9 +167,11 @@ class _HomePageState extends State<HomePage> {
             MaterialPageRoute(
               builder: (context) => AllJobsPage(),
             ));
-                // showSearch(context: context, delegate: jobsearch());
+
               })
+              
         ],
+      
       ),
       drawer: Drawer(
         child: ListView(
@@ -192,6 +202,7 @@ class _HomePageState extends State<HomePage> {
               leading: Icon(Icons.notifications),
               title: Text("Notification"),
               trailing: Icon(Icons.arrow_forward_ios_rounded),
+            
             ),
             ListTile(
               leading: Icon(Icons.contact_page),
@@ -331,42 +342,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Widget buildSearch() {
-  //   return Container(
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(.0),
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(20.0),
-  //         child: Column(
-  //           children: [
-  //             TextField(
-
-  //               // onChanged: (value) => _runFilter(value),
-  //               decoration: InputDecoration(
-  //                 contentPadding: const EdgeInsets.symmetric(
-  //                     vertical: 10.0, horizontal: 15),
-  //                 hintText: "Search",
-
-  //                suffixIcon: const Icon(Icons.search
-
-  //                ),
-  //                  //prefix: Icon(Icons.search),
-
-  //                 border: OutlineInputBorder(
-  //                   borderRadius: BorderRadius.circular(20.0),
-  //                   borderSide: const BorderSide(),
-
-  //                 ),
-  //               ),
-
-  //                      ),
-
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget buildCategories() {
     return Container(
